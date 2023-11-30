@@ -19,6 +19,8 @@ margin: auto;
 }
 #canvas{
     background: #000;
+    margin: auto;
+    width: fit-content;
     /* border: 1px solid #000; */
 }
 #body{
@@ -43,4 +45,8 @@ button{
     padding: 10px 30px;
     border-radius: 10px;
     font-size: large;
+}
+#image_board{
+    display: flex;
+    justify-content: center;
 }

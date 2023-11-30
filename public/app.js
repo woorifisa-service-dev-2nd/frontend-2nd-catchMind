@@ -3,25 +3,35 @@
  * 이미지 생성 버튼을 눌렀을 때 이미지 생성 api를 호출하도록
  */
 const textInput = document.getElementById("text").querySelector(".iput");
-const sizeInput = document.getElementById("ex-in");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const genButton = document.getElementById("genBtn");
 const nsfwButton = document.getElementById("nsfwBtn");
+const changeButton = document.getElementById("changeBtn");
+const multiflyButton = document.getElementById("multifly2");
 const img = new Image();
-var base64Image = "";
+let base64Image = "";
+
+multiflyButton.addEventListener("click", () => {
+	imgScale(2);
+});
 
 genButton.addEventListener("click", () => {
+	console.log(img.src=="");
 	const text = textInput.value;
-	const size = sizeInput.value;
-	imgGen(text, size);
+	imgGen(text);
 });
 
-nsfwButton.addEventListener("click", () => {
-	imgNsfw(img);
+changeButton.addEventListener("click", ()=>{
+	
+	imgChange();
 });
 
-const imgGen = (text, size) => {
+nsfwButton.addEventListener("click", ()=>{
+	imgNsfw();
+});
+
+const imgGen = (text) => {
 	fetch("/generate", {
 		method: "POST",
 		headers: {
@@ -31,8 +41,7 @@ const imgGen = (text, size) => {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log(data);
-			img.src = data.images[0].image; // JSON 응답 구조에 따라 조정 필요
+			img.src = data.images[0].image; 
 
 			toBase64(img.src);
 
@@ -60,7 +69,7 @@ const toBase64 = (src) => {
 		});
 };
 
-const imgNsfw = (img) => {
+const imgNsfw = () => {
 
 	if(img.src != "") {
 		console.log("nsfw 실행");
@@ -89,6 +98,59 @@ const imgNsfw = (img) => {
 	}
 };
 
-document.querySelector("#ex-in").addEventListener("input", (e) => {
-	document.querySelector("#ex-out").innerHTML = e.target.value;
-});
+const imgScale = (size) => {
+	console.log(base64Image);
+	if(img.src != ""){
+		console.log("이미지 확대");
+		fetch("/scaleUp", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({ image: base64Image, size: size })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				img.src = data.images[0]; // JSON 응답 구조에 따라 조정 필요
+
+				toBase64(img.src);
+
+				img.onload = () => {
+					// 캔버스 크기를 이미지 크기에 맞춥니다.
+					canvas.width = img.width;
+					canvas.height = img.height;
+        
+					// 캔버스에 이미지를 그립니다.
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+				};
+			})
+			.catch((error) => console.error(error));
+	}
+};
+
+const imgChange = () => {
+	if(img.src != ""){
+		console.log("이미지 변환 실행");
+		fetch("/change", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({ image: img.src })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				img.src = data.images[0].image;
+				toBase64(img.src);
+				img.onload = () => {
+					// 캔버스 크기를 이미지 크기에 맞춥니다.
+					canvas.width = img.width;
+					canvas.height = img.height;
+        
+					// 캔버스에 이미지를 그립니다.
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+				};
+			})
+			.catch((error) => console.error(error));
+	}
+};
