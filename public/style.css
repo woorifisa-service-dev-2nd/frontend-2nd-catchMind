@@ -1,1 +1,46 @@
 /*기본 화면 스타일 구성*/
+
+html{
+    padding: 40px;
+}
+h1{
+    font-size: 100px;
+    text-align: center;
+    margin: 2%;
+}
+#text {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+#size{
+margin: auto;
+    
+}
+#canvas{
+    background: #000;
+    /* border: 1px solid #000; */
+}
+#body{
+    display: flex;
+    justify-content: space-around;
+}
+.explan{
+    display: inline-block;
+    text-align: center;
+    font-size: 25px;
+}
+input{
+    width: 60%;
+    height: 70px;
+    font-size: 30px;
+    margin-right: 20px;
+    border-width: 0;
+    border-width: 0 0 1px;
+}
+button{
+    width: 140px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    font-size: large;
+}

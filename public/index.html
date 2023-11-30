@@ -1,1 +1,26 @@
 <!-- 기본 화면 구성 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>Catch Mind</h1>
+    <div id="body">
+        <div id="size">
+            <div class="explan">사진 사이즈 조절</div>
+            <input type="range" min="30" max="500" id="ex-in">
+            <div id="ex-out"></div>
+        </div>
+        <canvas id="canvas" width="700px" height="700px">왜안떠</canvas>
+    </div>
+    <div id="text">
+        <input class="iput" type="text">
+        <button>생성하기</button>
+    </div>
+</body>
+</html>
