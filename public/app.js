@@ -22,7 +22,7 @@ genButton.addEventListener("click", () => {
 });
 
 changeButton.addEventListener("click", ()=>{
-
+	
 	imgChange();
 });
 
@@ -44,7 +44,7 @@ const imgGen = (text) => {
 				// 캔버스 크기를 이미지 크기에 맞춥니다.
 				canvas.width = img.width;
 				canvas.height = img.height;
-
+    
 				// 캔버스에 이미지를 그립니다.
 				ctx.drawImage(img, 0, 0, img.width, img.height);
 			};
@@ -100,7 +100,7 @@ const imgChange = () => {
 					// 캔버스 크기를 이미지 크기에 맞춥니다.
 					canvas.width = img.width;
 					canvas.height = img.height;
-
+        
 					// 캔버스에 이미지를 그립니다.
 					ctx.drawImage(img, 0, 0, img.width, img.height);
 				};
