@@ -8,8 +8,25 @@ const ctx = canvas.getContext("2d");
 const genButton = document.getElementById("genBtn");
 const changeButton = document.getElementById("changeBtn");
 const multiflyButton = document.getElementById("multifly2");
+const saveButton = document.getElementById("saveBtn");
+
 const img = new Image();
 let base64Image = "";
+
+saveButton.addEventListener("click", ()=> {
+	if(base64Image){
+		fetch("/save-image", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ image: base64Image })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log("이미지 저장 완료:", data.message);
+			})
+			.catch((error) => console.error("이미지 저장 오류:", error));
+	}
+});
 
 multiflyButton.addEventListener("click", () => {
 	imgScale(2);

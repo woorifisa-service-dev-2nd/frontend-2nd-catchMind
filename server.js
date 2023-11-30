@@ -3,8 +3,6 @@
 const express = require("express");
 const app = express();
 
-// 나머지 서버 코드는 동일하게 유지
-
 app.use(express.static("public"));
 app.use(express.json());
 
@@ -119,6 +117,24 @@ app.post("/encode-image", (req, res) => {
 
 		const base64Image = Buffer.from(body).toString("base64");
 		res.json({ image: base64Image });
+	});
+});
+
+const fs = require("fs");
+const path = require("path");
+
+app.post("/save-image", (req, res) => {
+	const imageBase64 = req.body.image;
+	const timestamp = new Date().toISOString().replace(/:/g, "-").replace(/\..+/, "");
+	const filename = `savedImage_${timestamp}.png`;
+	const imagePath = path.join(__dirname, "saved", filename);
+
+	fs.writeFile(imagePath, imageBase64, "base64", (err) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send({ message: "이미지 저장 실패" });
+		}
+		res.send({ message: "이미지 저장 성공" });
 	});
 });
 
