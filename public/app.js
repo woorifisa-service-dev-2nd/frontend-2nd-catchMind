@@ -3,22 +3,27 @@
  * 이미지 생성 버튼을 눌렀을 때 이미지 생성 api를 호출하도록
  */
 const textInput = document.getElementById("text").querySelector(".iput");
-const sizeInput = document.getElementById("ex-in");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const genButton = document.getElementById("genBtn");
+const changeButton = document.getElementById("changeBtn");
 const defScaleButton = document.getElementById("origin");
 const mulScaleButton = document.getElementById("multifly2");
-let imgEncode;
 const img = new Image();
+let base64Image;
 
 genButton.addEventListener("click", () => {
+	console.log(img.src=="");
 	const text = textInput.value;
-	const size = sizeInput.value;
-	imgGen(text, size);
+	imgGen(text);
 });
 
-const imgGen = (text, size) => {
+changeButton.addEventListener("click", ()=>{
+
+	imgChange();
+});
+
+const imgGen = (text) => {
 	fetch("/generate", {
 		method: "POST",
 		headers: {
@@ -28,13 +33,13 @@ const imgGen = (text, size) => {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			imgEncode = data.imgaes[0].id;
 			img.src = data.images[0].image; // JSON 응답 구조에 따라 조정 필요
+
 			img.onload = () => {
 				// 캔버스 크기를 이미지 크기에 맞춥니다.
 				canvas.width = img.width;
 				canvas.height = img.height;
-    
+
 				// 캔버스에 이미지를 그립니다.
 				ctx.drawImage(img, 0, 0, img.width, img.height);
 			};
@@ -42,30 +47,66 @@ const imgGen = (text, size) => {
 		.catch((error) => console.error(error));
 };
 
+const imgChange = () => {
+	if(img.src != ""){
+		console.log("이미지 변환 실행");
+		fetch("/change", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({ image: img.src })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				img.src = data.images[0].image; // JSON 응답 구조에 따라 조정 필요
+
+				toBase64(img.src);
+
+				img.onload = () => {
+					// 캔버스 크기를 이미지 크기에 맞춥니다.
+					canvas.width = img.width;
+					canvas.height = img.height;
+
+					// 캔버스에 이미지를 그립니다.
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+				};
+			})
+			.catch((error) => console.error(error));
+	}
+};
+
 /**
  * 기본 이미지 크기
  */
 defScaleButton.addEventListener("click", () => {
-	const size = 2;
-	imgScale(size);
+	if (img.src != "") {
+		const size = 2;
+		imgScale(size);
+	} else {
+		console.log("이미지가 존재하지 않습니다.");
+	}
 });
 
 /**
  * 이미지 확대
  */
 mulScaleButton.addEventListener("click", () => {
-	const size = 4;
-	imgScale(size);
+	if (img.src != "") {
+		const size = 4;
+		imgScale(size);
+	} else {
+		console.log("이미지가 존재하지 않습니다.");
+	}
 });
 
 const imgScale = (size) => {
-	const images = [imgEncode];
 	fetch("/upscale", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ images : images, scale: size })
+		body: JSON.stringify({ images : img, scale: size })
 	})
 		.then((upscaleResponse) => upscaleResponse.json())
 		.then((upscaleData) => {
@@ -78,4 +119,16 @@ const imgScale = (size) => {
 			};
 		})
 		.catch((error) => console.error(error));
+};
+
+const toBase64 = (src) => {
+	fetch("/encode-image", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ imageUrl: src })
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			base64Image = data.image;
+		});
 };

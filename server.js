@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // fetch 모듈 불러오기 코드 삭제
 const express = require("express");
 const app = express();
@@ -11,63 +12,66 @@ const REST_API_KEY = "f4daf48df7ebe7f67aa7af07a888179f";
 
 app.post("/generate", (req, res) => {
 	const text = req.body.prompt;
+	console.log(req.body);
 
 	const url = "https://api.kakaobrain.com/v2/inference/karlo/t2i";
 
 	console.log("Received data from the client:", req.body);
 
-	fetch(url, {
-		method: "POST",
+	const request = require("request");
+
+	const options = {
+		url,
 		headers: {
 			"Authorization": `KakaoAK ${REST_API_KEY}`,
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ prompt: text })
-	})
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-			return response.json();
-		})
-		.then((data) => {
-			res.json(data);
-		})
-		.catch((error) => {
-			res.status(500).send(error.message);
-			console.error(error);
-		});
+		body: JSON.stringify({"prompt": text})
+        
+	};
+
+	request.post(options, (error, response, body) => {
+
+		if (!error && response.statusCode == 200) {
+			res.send(body);
+		} else {
+			res.status(response.statusCode).end();
+			console.log("error = " + response.statusCode);
+		}
+	});
+
 });
 
-app.post("/upscale", (req, res) => {
-	const images = req.body.images;
-	const size = req.body.scale;
+app.post("/change", (req, res) => {
+	const image = req.body.image;
+	console.log(req.body);
 
-	const url = "https://api.kakaobrain.com/v2/inference/karlo/upscale";
+	const url = "https://api.kakaobrain.com/v2/inference/karlo/variations";
 
-	console.log("Received data from the client:", req.body);
+	console.log("Target img src:", req.body);
 
-	fetch(url, {
-		method: "POST",
+	const request = require("request");
+
+	const options = {
+		url,
 		headers: {
 			"Authorization": `KakaoAK ${REST_API_KEY}`,
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ images : images, scale : size })
-	})
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-			return response.json();
-		})
-		.then((data) => {
-			res.json(data);
-		})
-		.catch((error) => {
-			res.status(500).send(error.message);
-			console.error(error);
-		});
+		body: JSON.stringify({"image": image})
+        
+	};
+
+	request.post(options, (error, response, body) => {
+
+		if (!error && response.statusCode == 200) {
+			res.send(body);
+		} else {
+			res.status(response.statusCode).end();
+			console.log("error = " + response.statusCode);
+		}
+	});
+
 });
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
