@@ -1,52 +1,76 @@
-/**
- * api 연결 및 서버 설정
- */
-
+// fetch 모듈 불러오기 코드 삭제
 const express = require("express");
-const bodyParser = require('body-parser');
 const app = express();
 
-//Base64 인코딩 함수
-const imageToString(img) => {
-    const canvas = createCanvas(img.width, img.height);
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-
-    const EncodedImg = canvas.toDataURL('image/png').replace(/^data:image\/\w+;base64,/, '');
-    return EncodedImg;
-};
-
-const stringToImage = (base64String) => {
-    const img = new Image();
-    img.src = `data:image/png`
-}
-
-
-const REST_API_KEY = "f4daf48df7ebe7f67aa7af07a888179f";
+// 나머지 서버 코드는 동일하게 유지
 
 app.use(express.static("public"));
 app.use(express.json());
 
-//index.html을 기본화면으로 세팅
-app.get("/", (req, res) => res.sendFile("index.html"));
+const REST_API_KEY = "f4daf48df7ebe7f67aa7af07a888179f";
 
-/**
- * 이미지 생성
- */
-app.post("/create-image", function(req, res) {
-    const KAKAO_BRAIN_API_URL = "https://api.kakaobrain.com/v2/inference/karlo/t2i";
-    request = require("request");
+app.post("/generate", (req, res) => {
+	const text = req.body.prompt;
 
-    const options = {
-        KAKAO_BRAIN_API_URL,
-        form: req.body,
-        headers: {
-            "Content-Type": "application/json",
+	const url = "https://api.kakaobrain.com/v2/inference/karlo/t2i";
 
-        }
-    }
-})
+	console.log("Received data from the client:", req.body);
 
-// 서버 인스턴스를 3000번 포트에서 대기하도록 명시
+	fetch(url, {
+		method: "POST",
+		headers: {
+			"Authorization": `KakaoAK ${REST_API_KEY}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ prompt: text })
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((error) => {
+			res.status(500).send(error.message);
+			console.error(error);
+		});
+});
+
+app.post("/upscale", (req, res) => {
+	const images = req.body.images;
+	const size = req.body.scale;
+
+	const url = "https://api.kakaobrain.com/v2/inference/karlo/upscale";
+
+	console.log("Received data from the client:", req.body);
+
+	fetch(url, {
+		method: "POST",
+		headers: {
+			"Authorization": `KakaoAK ${REST_API_KEY}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ images : images, scale : size })
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((error) => {
+			res.status(500).send(error.message);
+			console.error(error);
+		});
+});
+
+app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
+
 const port = 3000;
-app.listen(port, () => console.log(`http://127.0.0.1:${port}/ app listening on port ${3000}`));
+app.listen(port, () => console.log(`http://127.0.0.1:${port}/ app listening on port ${port}`));
