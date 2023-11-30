@@ -39,6 +39,39 @@ app.post("/generate", (req, res) => {
 			console.log("error = " + response.statusCode);
 		}
 	});
+
+});
+
+app.post("/change", (req, res) => {
+	const image = req.body.image;
+	console.log(req.body);
+
+	const url = "https://api.kakaobrain.com/v2/inference/karlo/variations";
+
+	console.log("Target img src:", req.body);
+
+	const request = require("request");
+
+	const options = {
+		url,
+		headers: {
+			"Authorization": `KakaoAK ${REST_API_KEY}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({"image": image})
+        
+	};
+
+	request.post(options, (error, response, body) => {
+
+		if (!error && response.statusCode == 200) {
+			res.send(body);
+		} else {
+			res.status(response.statusCode).end();
+			console.log("error = " + response.statusCode);
+		}
+	});
+
 });
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
