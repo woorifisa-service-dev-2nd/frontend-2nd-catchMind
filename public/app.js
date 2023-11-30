@@ -6,6 +6,7 @@ const textInput = document.getElementById("text").querySelector(".iput");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const genButton = document.getElementById("genBtn");
+const nsfwButton = document.getElementById("nsfwBtn");
 const changeButton = document.getElementById("changeBtn");
 const multiflyButton = document.getElementById("multifly2");
 const img = new Image();
@@ -24,6 +25,10 @@ genButton.addEventListener("click", () => {
 changeButton.addEventListener("click", ()=>{
 	
 	imgChange();
+});
+
+nsfwButton.addEventListener("click", ()=>{
+	imgNsfw();
 });
 
 const imgGen = (text) => {
@@ -47,9 +52,50 @@ const imgGen = (text) => {
     
 				// 캔버스에 이미지를 그립니다.
 				ctx.drawImage(img, 0, 0, img.width, img.height);
+
 			};
 		})
 		.catch((error) => console.error(error));
+};
+const toBase64 = (src) => {
+	fetch("/encode-image", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ imageUrl: src })
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			base64Image = data.image;
+		});
+};
+
+const imgNsfw = () => {
+
+	if(img.src != "") {
+		console.log("nsfw 실행");
+
+		fetch("/nsfw", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({ images: base64Image })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				const result =  data.results[0].nsfw_content_detected;
+				console.log(data);
+				console.log(result);
+				if (result !== "true") {
+					alert("폭력적/선정적 컨텐츠가 아닙니다");
+				} else {
+					alert("폭력적/선정적 컨텐츠입니다");
+				}		
+			})
+			.catch((error) => console.error(error));
+	} else {
+		alert("이미지가 없습니다!");
+	}
 };
 
 const imgScale = (size) => {
@@ -107,16 +153,4 @@ const imgChange = () => {
 			})
 			.catch((error) => console.error(error));
 	}
-};
-
-const toBase64 = (src) => {
-	fetch("/encode-image", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ imageUrl: src })
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			base64Image = data.image;
-		});
 };

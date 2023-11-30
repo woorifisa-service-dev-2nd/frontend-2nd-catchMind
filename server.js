@@ -122,6 +122,46 @@ app.post("/encode-image", (req, res) => {
 	});
 });
 
+app.post("/encode-image", (req, res) => {
+	const imageUrl = req.body.imageUrl;
+	const request = require("request");
+	request.get({ url: imageUrl, encoding: null }, (error, response, body) => {
+		if (error) {
+			console.error(error);
+			return res.status(500).send("Error fetching image");
+		}
+		const base64Image = Buffer.from(body).toString("base64");
+		res.json({ image: base64Image });
+	});
+});
+
+app.post("/nsfw", (req, res) => {
+	const img = req.body.images;
+
+	const url = "https://api.kakaobrain.com/v2/inference/karlo/nsfw_checker";
+
+	const request = require("request");
+
+	const options = {
+		url,
+		headers: {
+			"Authorization": `KakaoAK ${REST_API_KEY}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ images: [img] })
+	};
+
+	request.post(options, (error, response, body) => {
+
+		if (!error && response.statusCode == 200) {
+			res.send(body);
+		} else {
+			res.status(response.statusCode).end();
+			console.log("error = " + response.statusCode);
+		}
+	});
+});
+
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
 
 const port = 3000;
