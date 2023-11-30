@@ -10,17 +10,16 @@
 </head>
 <body>
     <h1>Catch Mind</h1>
-    <div id="body">
-        <div id="size">
-            <div class="explan">사진 사이즈 조절</div>
-            <input type="range" min="30" max="500" id="ex-in">
-            <div id="ex-out"></div>
-        </div>
-        <canvas id="canvas" width="650px" height="650px">왜안떠</canvas>
-    </div>
+    <div id="image_board"><canvas id="canvas" width="650px" height="650px">왜안떠</canvas></div>
     <div id="text">
         <input class="iput" type="text">
         <button id="genBtn">생성하기</button>
+        <button id="changeBtn">변환하기</button>
+        <button id="nsfwBtn">NSFW 검사하기</button>
+    </div>
+    <div>
+        <button id="origin">기본값</button>
+        <button id="multifly2">확대</button>
     </div>
 </body>
 </html>
