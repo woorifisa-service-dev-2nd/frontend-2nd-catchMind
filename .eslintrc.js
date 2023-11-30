@@ -27,5 +27,8 @@ module.exports = {
 
 		// 주석 스타일: "multiline-comment-style" 규칙을 사용하여 여러 줄 주석 스타일을 강제
 		"multiline-comment-style": ["error", "starred-block"],
+
+		// 따음표 : 큰 따음표
+		"quotes": ["error", "double"]
 	}
 };
