@@ -36,7 +36,7 @@ const imgGen = (text) => {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			img.src = data.images[0].image; 
+			img.src = data.images[0].image;
 
 			toBase64(img.src);
 
