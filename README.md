@@ -26,7 +26,7 @@
 # 🌟핵심 기능 및 구현 방법
 
 ## 1. 이미지 생성
-<img src="frontend-2nd-catchMind/readme_images/image_gen.png"/>
+![Alt text](/readme_images/image_gen.png)
 - 입력받은 텍스트를 http://localhost:3000/generate 로 보냄
 - server에서 karlo 이미지생성 api를 post
 - app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
