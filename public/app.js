@@ -9,6 +9,7 @@ const genButton = document.getElementById("genBtn");
 const nsfwButton = document.getElementById("nsfwBtn");
 const changeButton = document.getElementById("changeBtn");
 const multiflyButton = document.getElementById("multifly2");
+
 const img = new Image();
 let base64Image = "";
 
@@ -30,6 +31,19 @@ changeButton.addEventListener("click", ()=>{
 nsfwButton.addEventListener("click", ()=>{
 	imgNsfw();
 });
+
+const saveImg = () => {
+	fetch("/save-image", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ image: base64Image })
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log("이미지 저장 완료:", data.message);
+		})
+		.catch((error) => console.error("이미지 저장 오류:", error));
+};
 
 const imgGen = (text) => {
 	fetch("/generate", {
@@ -88,6 +102,7 @@ const imgNsfw = () => {
 				console.log(result);
 				if (result !== "true") {
 					alert("폭력적/선정적 컨텐츠가 아닙니다");
+					saveImg();
 				} else {
 					alert("폭력적/선정적 컨텐츠입니다");
 				}		
