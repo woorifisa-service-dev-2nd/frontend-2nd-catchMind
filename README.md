@@ -31,7 +31,10 @@
 - server에서 karlo 이미지생성 api를 post
 - app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 ## 2. 이미지 확대
-
+![Alt text](/readme_images/image_scale.png)
+- 입력받은 텍스트를 https://localhost:3000/imgScale 로 보냄
+- serverㅇ에서 karlo 이미지확대 api를 post
+- app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 ## 3. 이미지 변환
 ![Alt text](/readme_images/image_change.png)
 - 입력받은 텍스트를 http://localhost:3000/change 로 보냄
