@@ -26,11 +26,13 @@
 # 🌟핵심 기능 및 구현 방법
 
 ## 1. 이미지 생성
-
+![Alt text](<스크린샷 2023-12-01 오후 7.46.40.png>)
+- 입력받은 텍스트를 http://localhost:3000/generate 로 보냄
+- 
 ## 2. 이미지 확대
 
 ## 3. 이미지 변환
-
+![Alt text](<스크린샷 2023-12-01 오후 7.48.49.png>)
 ## 4. NSFW 검사 & 저장
 
 
@@ -44,10 +46,11 @@
 
 ![Alt text](image.png)
 	
-api 요청을 할 때 body의 형태가 위의 요청을 보면 헤더에서 “Content-Type” : “application/json”을 통해 반드시 json의 형태로 전달을 해 달라는 문장이 있기 때문에 body를 JSON.stringify()로 json 형태로 보내줘야 했습니다.
-	why?? app.js에서 req.body의 형태를 JSON.stringify()를 통해서 json으로 바꿔서 보냈는데 왜 또 json으로 해야하지??
+api 요청을 할 때 body의 형태가 위의 요청을 보면 헤더에서 “Content-Type” : “application/json”을 통해 반드시 json의 형태로 전달을 해 달라는 문장이 있기 때문에 body를 JSON.stringify()로 json 형태로 보내줘야 했습니다.</br>
+
+	app.js에서 req.body의 형태를 JSON.stringify()를 통해서 json으로 바꿔서 보냈는데 왜 또 json으로 해야하지??
 	=> server.js 에서 사용한 “app.use(express.json());” 때문입니다!! -> 이 명령어로 인해서 server는 받아온 json형태의 데이터를 	Object(객체)로 바꿔버립니다! 파파고 api에서 잘 작동했던 이유는 파파고는 헤더에서 형태가 json이라고 따로 지정을 안했기 때문!!
-따라서 앞으로도 api를 통해 전달을 할 일이 있을 때 각 api가 어떤 형태로 데이터를 전달하기 원하는지 잘 확인을 해야겠습니다!!
+앞으로도 api를 통해 전달을 할 일이 있을 때 각 api가 어떤 형태로 데이터를 전달하기 원하는지 잘 확인을 해야겠습니다!!
 
 # ⚖️도메인 용어 정의
 
