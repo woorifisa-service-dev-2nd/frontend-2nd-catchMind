@@ -26,13 +26,17 @@
 # 🌟핵심 기능 및 구현 방법
 
 ## 1. 이미지 생성
-![Alt text](/frontend-2nd-catchMind/readme_images/image_gen.png)
+<img src="frontend-2nd-catchMind/readme_images/image_gen.png"/>
 - 입력받은 텍스트를 http://localhost:3000/generate 로 보냄
-- 
+- server에서 karlo 이미지생성 api를 post
+- app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 ## 2. 이미지 확대
 
 ## 3. 이미지 변환
-![Alt text](/frontend-2nd-catchMind/readme_images/image_change.png)
+![Alt text](/readme_images/image_change.png)
+- 입력받은 텍스트를 http://localhost:3000/change 로 보냄
+- server에서 karlo 이미지변환 api를 post
+- app에서 새롭게 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 ## 4. NSFW 검사 & 저장
 
 
@@ -44,7 +48,7 @@
 
 이전 파파고 번역 api를 진행할 때 서버에서 전달받은 req.body를 바로 form에 넣어 전달을 했을 때는 잘 작동했습니다. 그러나 이번 카카오 karlo 이미지 생성 api를 위와 같은 방법으로 진행(body: req.body)하였는데 오류가 발생하였습니다.
 
-![Alt text](/frontend-2nd-catchMind/readme_images/image.png)
+![Alt text](/readme_images/image.png)
 	
 api 요청을 할 때 body의 형태가 위의 요청을 보면 헤더에서 “Content-Type” : “application/json”을 통해 반드시 json의 형태로 전달을 해 달라는 문장이 있기 때문에 body를 JSON.stringify()로 json 형태로 보내줘야 했습니다.</br>
 
