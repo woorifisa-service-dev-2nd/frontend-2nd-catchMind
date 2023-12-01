@@ -46,30 +46,34 @@ const saveImg = () => {
 };
 
 const imgGen = (text) => {
-	fetch("/generate", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ prompt: text })
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			img.src = data.images[0].image; 
-
-			toBase64(img.src);
-
-			img.onload = () => {
-				// 캔버스 크기를 이미지 크기에 맞춥니다.
-				canvas.width = img.width;
-				canvas.height = img.height;
-    
-				// 캔버스에 이미지를 그립니다.
-				ctx.drawImage(img, 0, 0, img.width, img.height);
-
-			};
+	if(textInput.value != "") {
+		fetch("/generate", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({ prompt: text })
 		})
-		.catch((error) => console.error(error));
+			.then((response) => response.json())
+			.then((data) => {
+				img.src = data.images[0].image; 
+
+				toBase64(img.src);
+
+				img.onload = () => {
+				// 캔버스 크기를 이미지 크기에 맞춥니다.
+					canvas.width = img.width;
+					canvas.height = img.height;
+    
+					// 캔버스에 이미지를 그립니다.
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+
+				};
+			})
+			.catch((error) => console.error(error));
+	} else {
+		alert("제시어를 입력하지 않았습니다.");
+	}
 };
 const toBase64 = (src) => {
 	fetch("/encode-image", {
@@ -101,8 +105,11 @@ const imgNsfw = () => {
 				console.log(data);
 				console.log(result);
 				if (result !== "true") {
-					alert("폭력적/선정적 컨텐츠가 아닙니다");
-					saveImg();
+
+					if (confirm("폭력적/선정적 컨텐츠가 아닙니다. 사진을 저장하시겠습니까?")) {
+						saveImg();
+						alert("사진이 저장되었습니다.");
+					}
 				} else {
 					alert("폭력적/선정적 컨텐츠입니다");
 				}		
