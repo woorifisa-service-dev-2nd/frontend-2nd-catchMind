@@ -1,24 +1,108 @@
 <!-- 기본 화면 구성 -->
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CatchMind!</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&family=IBM+Plex+Sans+KR&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="./image/icons8-canvas-64.png" type="image/x-icon">
 </head>
+
 <body>
-    <h1>Catch Mind</h1>
-    <div id="image_board"><canvas id="canvas" width="650px" height="650px">왜안떠</canvas></div>
-    <div id="text">
-        <input class="iput" type="text">
-        <button id="genBtn">생성</button>
-        <button id="changeBtn">변환</button>
-        <button id="nsfwBtn">저장</button>
+    <header>
+        <h1>Catch Mind</h1>
+        <!-- 열리는 카드 -->
+        <div id="card">
+            <div class="letter-close">
+                <div class="envelope" onclick="open_letter()"></div>
+                <h3 class="envelope-msg">Open It!</h3>
+            </div>
+
+            <div class="letter-open">
+                <div class="rtan" onclick="go_rtan()"></div>
+                <div class="messagebox">
+                    <h2>Who make it?<br /></h2>
+                    <a style="text-decoration:none" href="https://github.com/rlaxoqkf" target='_blank'>김태혁</a> <br />
+                    <a style="text-decoration:none" href="https://github.com/zzzdks760" target='_blank'>안성민</a> <br />
+                    <a style="text-decoration:none" href="https://github.com/limfruit" target='_blank'>임성실</a> <br />
+                    <a style="text-decoration:none" href="https://github.com/HyeJin0102" target='_blank'>홍혜진</a> <br />
+                    <p class="from" style="font-weight: bold;">Catch Mind!</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </header>
+    <div class="main">
     </div>
-    <div>
-        <button id="multifly2">확대</button>
+    <main id="imageSection">
+        <div id="imageBoard">
+            <canvas id="canvas" width="650px" height="650px"></canvas>
+        </div>
+    </main>
+    <section id="nav">
+        <div id="text">
+            <input class="input" type="text" placeholder="Please enter the keyword in English">
+        </div>
+        <section id="button">
+            <button id="genBtn"><span>생성하기</span></button>
+            <button id="changeBtn"><span>변환하기</span></button>
+            <button id="multifly2"><span>확대하기</span></button>
+            <button id="nsfwBtn"><span>저장하기</span></button>
+        </section>
+    </section>
+    <!-- CSS 애니메이션 HTML -->
+    <div class="container">
+        <div class="circle"></div>
+        <div class="snow">
+            <span style="--i:11"></span>
+            <span style="--i:12"></span>
+            <span style="--i:24"></span>
+            <span style="--i:10"></span>
+            <span style="--i:14"></span>
+            <span style="--i:23"></span>
+            <span style="--i:18"></span>
+            <span style="--i:16"></span>
+            <span style="--i:19"></span>
+            <span style="--i:20"></span>
+            <span style="--i:22"></span>
+            <span style="--i:25"></span>
+            <span style="--i:18"></span>
+            <span style="--i:21"></span>
+            <span style="--i:13"></span>
+            <span style="--i:15"></span>
+            <span style="--i:26"></span>
+            <span style="--i:17"></span>
+            <span style="--i:13"></span>
+            <span style="--i:28"></span>
+            <span style="--i:11"></span>
+            <span style="--i:12"></span>
+            <span style="--i:24"></span>
+            <span style="--i:10"></span>
+            <span style="--i:14"></span>
+            <span style="--i:23"></span>
+            <span style="--i:18"></span>
+            <span style="--i:16"></span>
+            <span style="--i:19"></span>
+            <span style="--i:20"></span>
+            <span style="--i:22"></span>
+            <span style="--i:25"></span>
+            <span style="--i:18"></span>
+            <span style="--i:21"></span>
+            <span style="--i:13"></span>
+            <span style="--i:15"></span>
+            <span style="--i:26"></span>
+            <span style="--i:17"></span>
+            <span style="--i:13"></span>
+            <span style="--i:28"></span>
+        </div>
     </div>
 </body>
+
 </html>

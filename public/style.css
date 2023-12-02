@@ -1,52 +1,372 @@
 /*기본 화면 스타일 구성*/
 
-html{
-    padding: 40px;
+/* reset.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-h1{
-    font-size: 100px;
-    text-align: center;
-    margin: 2%;
+
+body {
+    height: 130vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
 }
-#text {
+
+/* header */
+header {
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 5%;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 0px;
 }
-#size{
-margin: auto;
-    
+
+/* 상단의 제목 색깔 애니메이션 */
+h1 {
+    max-height: fit-content;
+    padding: 20px;
+    margin: 10px;
+    font-size: 6vw;
+    color: #313131;
+    font-weight: bolder;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    text-shadow: 0 0 3vw #2356FF;
+    animation: flux 2s linear infinite;
+    -moz-animation: flux 2s linear infinite;
+    -webkit-animation: flux 2s linear infinite;
+    -o-animation: flux 2s linear infinite;
 }
-#canvas{
-    background: #000;
+
+@keyframes flux {
+
+    0%,
+    100% {
+        text-shadow: 0 0 1vw #1041FF, 0 0 3vw #1041FF, 0 0 10vw #1041FF, 0 0 10vw #1041FF, 0 0 .4vw #8BFDFE, .5vw .5vw .1vw #147280;
+        color: #28D7FE;
+    }
+
+    50% {
+        text-shadow: 0 0 .5vw #082180, 0 0 1.5vw #082180, 0 0 5vw #082180, 0 0 5vw #082180, 0 0 .2vw #082180, .5vw .5vw .1vw #0A3940;
+        color: #146C80;
+    }
+}
+
+/* main */
+
+#imageBoard {
+    display: flex;
+    justify-content: center;
+}
+
+#canvas {
     margin: auto;
     width: fit-content;
-    /* border: 1px solid #000; */
 }
-#body{
-    display: flex;
-    justify-content: space-around;
-}
-.explan{
-    display: inline-block;
-    text-align: center;
-    font-size: 25px;
-}
-input{
-    width: 60%;
+
+/* section id="text" */
+
+input {
+    margin-left: 20%;
+    width: 32%;
     height: 70px;
     font-size: 30px;
-    margin-right: 20px;
-    border-width: 0;
     border-width: 0 0 1px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    position: fixed;
+    bottom: 5px;
 }
-button{
-    width: 140px;
-    padding: 10px 30px;
-    border-radius: 10px;
-    font-size: large;
-}
-#image_board{
+
+/* section id="button" */
+
+#button {
+    font-family: 'Josefin Sans';
+    width: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 20%;
     display: flex;
     justify-content: center;
+    position: fixed;
+    right: 20px;
+    bottom: 5px;
+    font-size: larger;
+}
+
+#genBtn,
+#changeBtn,
+#multifly2,
+#nsfwBtn {
+    color: rgba(82, 100, 121, 0.989);
+    box-shadow: 0px 0px 20px rgb(128, 128, 128);
+    background-color: rgb(27, 17, 53);
+    font-weight: bold;
+    background-color: rgba(45, 74, 161, 0.269);
+    border-radius: 10px;
+    line-height: 40px;
+    padding: 5px;
+    border: none;
+    margin-left: 40px;
+}
+
+#genBtn span,
+#changeBtn span,
+#multifly2 span,
+#nsfwBtn span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+#genBtn:hover,
+#changeBtn:hover,
+#multifly2:hover,
+#nsfwBtn:hover {
+    background: transparent;
+    background-color: #65a0a0;
+    color: #fff;
+    cursor: pointer;
+}
+
+/*section id="nav"*/
+#nav {
+    width: 100vw;
+    height: 8%;
+    position: fixed;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.969);
+    z-index: 2;
+}
+
+.surprise {
+    background: url(./image/present.png);
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    top: 10px;
+}
+
+/*눈 애니메이션*/
+
+.container {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    bottom: 7%;
+    width: 100%;
+    height: 200px;
+    background: url(./image/tree.png);
+    z-index: 1;
+}
+
+.container .snow {
+    position: fixed;
+    top: 0px;
+    display: flex;
+}
+
+.container .snow span {
+    position: relative;
+    min-width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 1vw;
+    box-shadow: -100px 20px 5px #fff,
+        100px 20px 10px #fff;
+    animation: animateSnow 1s linear infinite;
+    animation-duration: calc(75s/ var(--i));
+}
+
+.container .snow span:nth-child(even) {
+    min-width: 10px;
+    height: 10px;
+}
+
+@keyframes animateSnow {
+    0% {
+        transform: translateY(-10vh);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+/*산타 애니메이션*/
+.container .circle {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background: rgb(219, 225, 164);
+    border-radius: 50%;
+}
+
+.container .circle::before {
+    content: '';
+    position: absolute;
+    inset: -200px -300px;
+    background: url(./image/santa.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 500px;
+    animation: animaite 5s ease-in-out infinite;
+}
+
+@keyframes animaite {
+
+    0%,
+    100% {
+        transform: translateY(-25px);
+    }
+
+    50% {
+        transform: translateY(25px);
+    }
+}
+
+.container .circle::after {
+    position: absolute;
+    inset: -125px -200px;
+    font-size: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: flex-end;
+    color: #fff;
+}
+
+/* 편지 애니메이션 */
+#card {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+
+.envelope {
+    width: 80px;
+    height: 80px;
+    background-image: url('https://pngimg.com/uploads/envelope/envelope_PNG18366.png');
+    background-size: cover;
+    background-position: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.envelope-msg {
+    color: rgb(144, 132, 132);
+    text-align: center;
+    margin: -20px;
+    font-size: medium;
+}
+
+.letter-close:hover {
+    transform: scale(1.4);
+}
+
+.letter-close {
+    display: block;
+}
+
+.letter-open {
+    display: none;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    margin: 10px;
+    color: white;
+    background-color: rgb(243, 209, 146);
+    box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
+}
+
+.messagebox {
+    background-color: rgba(237, 227, 209, 0.889);
+    width: 250px;
+    color: rgb(36, 21, 21);
+    padding: 8px;
+    font-size: 15px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 0px 0px 13px 0px white;
+}
+
+.from {
+    text-align: right;
+    font-weight: bold;
+    font-size: large;
+    padding-right: 15px;
+    margin-bottom: 0px;
+    color: #c35438;
+    animation: textColor 7s infinite;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+@keyframes textColor {
+    20% {
+        color: #341480;
+    }
+
+    40% {
+        color: rgb(53, 150, 179);
+    }
+
+    60% {
+        color: rgb(207, 145, 59);
+    }
+
+    80% {
+        color: #ad2e74;
+    }
+
+    100% {
+        color: rgb(59, 171, 85);
+    }
+}
+
+a::after {
+    content: "" url(./image/github.png);
+}
+
+@media screen and (max-width: 760px) {
+    .messagebox {
+        width: 300px;
+        padding: 20px;
+    }
+
+    .rtan {
+        width: 150px;
+        height: 150px;
+        margin: 70px auto 0px auto;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .envelope {
+        margin: 150px auto 0px auto;
+    }
 }

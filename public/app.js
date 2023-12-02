@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
+
 /**
  * 이미지 생성 버튼을 눌렀을 때 이미지 생성 api를 호출하도록
  */
-const textInput = document.getElementById("text").querySelector(".iput");
+const textInput = document.getElementById("text").querySelector(".input");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const genButton = document.getElementById("genBtn");
@@ -13,22 +14,30 @@ const multiflyButton = document.getElementById("multifly2");
 const img = new Image();
 let base64Image = "";
 
+/**
+ * CSS 편지 애니메이션
+ */
+function open_letter() {
+	document.getElementsByClassName("letter-close")[0].style.display = "none";
+	document.getElementsByClassName("letter-open")[0].style.display = "block";
+}
+
 multiflyButton.addEventListener("click", () => {
 	imgScale(2);
 });
 
 genButton.addEventListener("click", () => {
-	console.log(img.src=="");
+	console.log(img.src == "");
 	const text = textInput.value;
 	imgGen(text);
 });
 
-changeButton.addEventListener("click", ()=>{
-	
+changeButton.addEventListener("click", () => {
+
 	imgChange();
 });
 
-nsfwButton.addEventListener("click", ()=>{
+nsfwButton.addEventListener("click", () => {
 	imgNsfw();
 });
 
@@ -46,34 +55,30 @@ const saveImg = () => {
 };
 
 const imgGen = (text) => {
-	if(textInput.value != "") {
-		fetch("/generate", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ prompt: text })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				img.src = data.images[0].image; 
+	fetch("/generate", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ prompt: text })
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			img.src = data.images[0].image;
 
-				toBase64(img.src);
+			toBase64(img.src);
 
-				img.onload = () => {
+			img.onload = () => {
 				// 캔버스 크기를 이미지 크기에 맞춥니다.
-					canvas.width = img.width;
-					canvas.height = img.height;
-    
-					// 캔버스에 이미지를 그립니다.
-					ctx.drawImage(img, 0, 0, img.width, img.height);
+				canvas.width = img.width;
+				canvas.height = img.height;
 
-				};
-			})
-			.catch((error) => console.error(error));
-	} else {
-		alert("제시어를 입력하지 않았습니다.");
-	}
+				// 캔버스에 이미지를 그립니다.
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+
+			};
+		})
+		.catch((error) => console.error(error));
 };
 const toBase64 = (src) => {
 	fetch("/encode-image", {
@@ -89,7 +94,7 @@ const toBase64 = (src) => {
 
 const imgNsfw = () => {
 
-	if(img.src != "") {
+	if (img.src != "") {
 		console.log("nsfw 실행");
 
 		fetch("/nsfw", {
@@ -101,18 +106,15 @@ const imgNsfw = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const result =  data.results[0].nsfw_content_detected;
+				const result = data.results[0].nsfw_content_detected;
 				console.log(data);
 				console.log(result);
 				if (result !== "true") {
-
-					if (confirm("폭력적/선정적 컨텐츠가 아닙니다. 사진을 저장하시겠습니까?")) {
-						saveImg();
-						alert("사진이 저장되었습니다.");
-					}
+					alert("폭력적/선정적 컨텐츠가 아닙니다");
+					saveImg();
 				} else {
 					alert("폭력적/선정적 컨텐츠입니다");
-				}		
+				}
 			})
 			.catch((error) => console.error(error));
 	} else {
@@ -122,7 +124,7 @@ const imgNsfw = () => {
 
 const imgScale = (size) => {
 	console.log(base64Image);
-	if(img.src != ""){
+	if (img.src != "") {
 		console.log("이미지 확대");
 		fetch("/scaleUp", {
 			method: "POST",
@@ -141,7 +143,7 @@ const imgScale = (size) => {
 					// 캔버스 크기를 이미지 크기에 맞춥니다.
 					canvas.width = img.width;
 					canvas.height = img.height;
-        
+
 					// 캔버스에 이미지를 그립니다.
 					ctx.drawImage(img, 0, 0, img.width, img.height);
 				};
@@ -151,7 +153,7 @@ const imgScale = (size) => {
 };
 
 const imgChange = () => {
-	if(img.src != ""){
+	if (img.src != "") {
 		console.log("이미지 변환 실행");
 		fetch("/change", {
 			method: "POST",
@@ -168,7 +170,7 @@ const imgChange = () => {
 					// 캔버스 크기를 이미지 크기에 맞춥니다.
 					canvas.width = img.width;
 					canvas.height = img.height;
-        
+
 					// 캔버스에 이미지를 그립니다.
 					ctx.drawImage(img, 0, 0, img.width, img.height);
 				};
