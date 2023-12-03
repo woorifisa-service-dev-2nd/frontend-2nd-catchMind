@@ -261,7 +261,6 @@ input {
     left: 10px;
 }
 
-
 .envelope {
     width: 80px;
     height: 80px;
@@ -289,6 +288,12 @@ input {
 
 .letter-open {
     display: none;
+}
+
+.close {
+    text-align: end;
+    float: right;
+    cursor: pointer;
 }
 
 h2 {
@@ -346,7 +351,15 @@ h2 {
     }
 }
 
+  a:visited {
+    color : black;
+  }
+  a:hover {
+    color : rgb(214, 162, 58);
+  }
+
 a::after {
+    cursor: pointer;
     content: "" url(./image/github.png);
 }
 
