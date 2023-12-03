@@ -15,12 +15,12 @@ const img = new Image();
 let base64Image = "";
 
 /**
- * CSS 편지 애니메이션
+ * 편지기능
  */
-function open_letter() {
+const open_letter = () => {
 	document.getElementsByClassName("letter-close")[0].style.display = "none";
-	document.getElementsByClassName("letter-open")[0].style.display = "block";
-}
+	document.getElementsByClassName("letter-open")[0].style.display = "flex";
+};
 
 multiflyButton.addEventListener("click", () => {
 	imgScale(2);
