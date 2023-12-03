@@ -45,7 +45,7 @@
 - app에서 새롭게 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 ## 4. NSFW 검사 & 저장
 ![Alt text](readme_images/save.gif)
-![Alt text](/readme_images/image_nsfw.png)
+![Alt text](/readme_images/image_nsfw.PNG)
 - 이미지 파일을 Base64 인코딩한 값을 http://localhost:3000/nsfw 로 보냄
 
 ![Alt text](/readme_images/image_save.png)
