@@ -31,18 +31,21 @@
 - 입력받은 텍스트를 http://localhost:3000/generate 로 보냄
 - server에서 karlo 이미지생성 api를 post
 - app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
-## 2. 이미지 확대
-![Alt text](readme_images/scale.gif)
-![Alt text](/readme_images/image_scale.png)
-- 이미지 파일을 Base64 인코딩한 값을 https://localhost:3000/imgScale 로 보냄
-- serverㅇ에서 karlo 이미지확대 api를 post
-- app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
-## 3. 이미지 변환
+
+## 2. 이미지 변환
 ![Alt text](readme_images/change.gif)
 ![Alt text](/readme_images/image_change.png)
 - 이미지 파일을 Base64 인코딩한 값을 http://localhost:3000/change 로 보냄
 - server에서 karlo 이미지변환 api를 post
 - app에서 새롭게 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
+
+## 3. 이미지 확대
+![Alt text](readme_images/scale.gif)
+![Alt text](/readme_images/image_scale.png)
+- 이미지 파일을 Base64 인코딩한 값을 https://localhost:3000/imgScale 로 보냄
+- serverㅇ에서 karlo 이미지확대 api를 post
+- app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
+
 ## 4. NSFW 검사 & 저장
 ![Alt text](readme_images/save.gif)
 ![Alt text](/readme_images/image_nsfw.PNG)
@@ -102,6 +105,9 @@ api 요청을 할 때 body의 형태가 위의 요청을 보면 헤더에서 “
 * **줄 간격** : "no-multiple-empty-lines" 규칙을 사용하여 연속된 빈 줄을 허용하지 않음
 * **주석 스타일** : "multiline-comment-style" 규칙을 사용하여 여러 줄 주석 스타일을 강제
 * **따음표** : "quotes" 규칙을 사용하여 큰 따옴표 사용하도록 설정
+</br></br>
+
+각 팀원이 따로 작성한 코드임에도 전체 코드가 일관성 있는 것을 확인하면서 ESLint가 협업하기에 필수적인 라이브러리임을 느낄 수 있었습니다.
 </br></br>
 # 📝회고
 
