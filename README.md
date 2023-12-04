@@ -43,18 +43,18 @@
 ![Alt text](readme_images/scale.gif)
 ![Alt text](/readme_images/image_scale.png)
 - 이미지 파일을 Base64 인코딩한 값을 https://localhost:3000/imgScale 로 보냄
-- serverㅇ에서 karlo 이미지확대 api를 post
+- server에서 karlo 이미지확대 api를 post
 - app에서 생성된 이미지 src를 전달받고 src를 인코딩한 값 저장 및 이미지 띄움
 
 ## 4. NSFW 검사 & 저장
 ![Alt text](readme_images/save.gif)
 ![Alt text](/readme_images/image_nsfw.PNG)
 - 이미지 파일을 Base64 인코딩한 값을 http://localhost:3000/nsfw 로 보냄
+- server에서 Karlo NSFW(Not Safe For Work, 폭력적이거나 선정적임) 검사 api를 post
 
 ![Alt text](/readme_images/image_save.png)
-- server에서 Karlo NSFW(Not Safe For Work, 폭력적이거나 선정적임) 검사 api를 post
 - 검사 결과가 false일 경우(폭력적/선정적이지 않음) 저장하고 싶은지 확인 후 http://localhost:3000/- save-imgae 로 Base64 이미지 인코딩 값 보냄
-이미지 저장 완료
+- 이미지 저장 완료
 
 </br></br>
 # 👀트러블 슈팅
