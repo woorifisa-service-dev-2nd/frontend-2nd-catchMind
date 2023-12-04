@@ -2,6 +2,7 @@
 
 # 🔍프로젝트 소개
 ### Karlo Open API 활용 웹 서비스
+Karlo API는 사용자가 입력한 문장과 이미지를 기반으로 새로운 이미지를 만드는 기능을 제공하는 서비스입니다.
 </br></br>
 
 # 👨‍👩‍👧‍👦팀원
@@ -48,7 +49,7 @@
 
 ## 4. NSFW 검사 & 저장
 ![Alt text](readme_images/save.gif)
-![Alt text](/readme_images/image_nsfw.PNG)
+![Alt text](readme_images/image_nsfw.png)
 - 이미지 파일을 Base64 인코딩한 값을 http://localhost:3000/nsfw 로 보냄
 - server에서 Karlo NSFW(Not Safe For Work, 폭력적이거나 선정적임) 검사 api를 post
 
