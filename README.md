@@ -77,7 +77,7 @@ at HTMLButtonElement.<anonymous> (http://localhost:3000/app.js:19:23)"
 ## 2. API 전달 데이터 형식
 
 이전 파파고 번역 api를 진행할 때 서버에서 전달받은 req.body를 바로 form에 넣어 전달을 했을 때는 잘 작동했습니다. 그러나 이번 카카오 karlo 이미지 생성 api를 위와 같은 방법으로 진행(body: req.body)하였는데 오류가 발생하였습니다.
-![Alt text](image_api.png)
+![Alt text](/readme_images/image_api.png)
 	
 api 요청을 할 때 body의 형태가 위의 요청을 보면 헤더에서 “Content-Type” : “application/json”을 통해 반드시 json의 형태로 전달을 해 달라는 문장이 있기 때문에 body를 JSON.stringify()로 json 형태로 보내줘야 했습니다.</br>
 
