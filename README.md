@@ -49,7 +49,7 @@ Karlo API는 사용자가 입력한 문장과 이미지를 기반으로 새로�
 
 ## 4. NSFW 검사 & 저장
 ![Alt text](readme_images/save.gif)
-![Alt text](readme_images/image_nsfw.png)
+![Alt text](readme_images/image_nsfw.PNG)
 - 이미지 파일을 Base64 인코딩한 값을 http://localhost:3000/nsfw 로 보냄
 - server에서 Karlo NSFW(Not Safe For Work, 폭력적이거나 선정적임) 검사 api를 post
 
