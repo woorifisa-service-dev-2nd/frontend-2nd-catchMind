@@ -1,8 +1,10 @@
-/* eslint-disable no-unused-vars */
-
+import { imgScale, imgGen, imgChange, imgNsfw, toBase64, saveImg } from "./api.js";
 /**
- * 이미지 생성 버튼을 눌렀을 때 이미지 생성 api를 호출하도록
+ * app.js: 생성버튼 클릭이벤트, 확대버튼 클릭이벤트, 변환버튼 클릭이벤트, 이미지저장 클릭이벤트
+ * api.js: 이미지 생성 함수 & 인코딩 처리 함수, 이미지 확대 함수, 이미지 변환 함수, NSFW 체크 함수, 이미지 저장 함수
+ * util.js: 편지지
  */
+
 const textInput = document.getElementById("text").querySelector(".input");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -11,178 +13,81 @@ const nsfwButton = document.getElementById("nsfwBtn");
 const changeButton = document.getElementById("changeBtn");
 const multiflyButton = document.getElementById("multifly2");
 
-const img = new Image();
-let base64Image = "";
+let encodedImageSrc = "";
 
-/**
- * 편지기능
- */
-const open_letter = () => {
-	document.getElementsByClassName("letter-close")[0].style.display = "none";
-	document.getElementsByClassName("letter-open")[0].style.display = "flex";
-};
+//이미지 확대 버튼 클릭 이벤트
+multiflyButton.addEventListener("click", async () => {
+	if (encodedImageSrc != "") {
+		let upscaleImage = new Image();
+		
+		upscaleImage.onload = () => {
+			canvas.width = upscaleImage.width;
+			canvas.height = upscaleImage.height;
 
-multiflyButton.addEventListener("click", () => {
-	imgScale(2);
+			ctx.drawImage(upscaleImage, 0, 0, upscaleImage.width, upscaleImage.height);
+		};
+
+		upscaleImage.src = await imgScale(2, encodedImageSrc);
+		encodedImageSrc = await toBase64(upscaleImage.src);
+	} else {
+		alert("확대할 이미지가 존재하지 않습니다.");
+	}
 });
 
-genButton.addEventListener("click", () => {
-	console.log(img.src == "");
+// 이미지 생성 버튼 클릭 이벤트 
+genButton.addEventListener("click", async () => {
 	const text = textInput.value;
-	imgGen(text);
-});
+	if (text != "") {
+		let createdImage = new Image();
 
-changeButton.addEventListener("click", () => {
+		createdImage.onload = () => {
+			canvas.width = createdImage.width;
+			canvas.height = createdImage.height;
 
-	imgChange();
-});
+			// 캔버스에 이미지를 그립니다.
+			ctx.drawImage(createdImage, 0, 0, createdImage.width, createdImage.height);
+		};
 
-nsfwButton.addEventListener("click", () => {
-	imgNsfw();
-});
-
-const saveImg = () => {
-	fetch("/save-image", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ image: base64Image })
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log("이미지 저장 완료:", data.message);
-		})
-		.catch((error) => console.error("이미지 저장 오류:", error));
-};
-
-const imgGen = (text) => {
-	if(textInput.value != "") {
-		fetch("/generate", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ prompt: text })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				img.src = data.images[0].image; 
-
-				toBase64(img.src);
-
-				img.onload = () => {
-				// 캔버스 크기를 이미지 크기에 맞춥니다.
-					canvas.width = img.width;
-					canvas.height = img.height;
-    
-					// 캔버스에 이미지를 그립니다.
-					ctx.drawImage(img, 0, 0, img.width, img.height);
-
-				};
-			})
-			.catch((error) => console.error(error));
+		createdImage.src = await imgGen(text);
+		encodedImageSrc = await toBase64(createdImage.src);
 	} else {
-		alert("제시어를 입력하지 않았습니다.");
+		alert("키워드를 입력해주세요");
 	}
-};
+});
 
-const toBase64 = (src) => {
-	fetch("/encode-image", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ imageUrl: src })
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			base64Image = data.image;
-		});
-};
+//이미지 변환 버튼 클릭이벤트
+changeButton.addEventListener("click", async () => {
 
-const imgNsfw = () => {
+	if (encodedImageSrc != "") {
+		let changedImage = new Image();
 
-	if(img.src != "") {
-		console.log("nsfw 실행");
+		changedImage.onload = () => {
+			canvas.width = changedImage.width;
+			canvas.height = changedImage.height;
 
-		fetch("/nsfw", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ images: base64Image })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				const result =  data.results[0].nsfw_content_detected;
-				console.log(data);
-				console.log(result);
-				if (result !== "true") {
+			// 캔버스에 이미지를 그립니다.
+			ctx.drawImage(changedImage, 0, 0, changedImage.width, changedImage.height);
+		};
 
-					if (confirm("폭력적/선정적 컨텐츠가 아닙니다. 사진을 저장하시겠습니까?")) {
-						saveImg();
-						alert("사진이 저장되었습니다.");
-					}
-				} else {
-					alert("폭력적/선정적 컨텐츠입니다");
-				}		
-			})
-			.catch((error) => console.error(error));
+		changedImage.src = await imgChange(encodedImageSrc);
+		encodedImageSrc = await toBase64(changedImage.src);
 	} else {
-		alert("이미지가 없습니다!");
+		alert("변환할 이미지가 없습니다.");
 	}
-};
+});
 
-const imgScale = (size) => {
-	console.log(base64Image);
-	if (img.src != "") {
-		console.log("이미지 확대");
-		fetch("/scaleUp", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ image: base64Image, size: size })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				img.src = data.images[0]; // JSON 응답 구조에 따라 조정 필요
+//이미지 Nsfw & 저장버튼 클릭이벤트
+nsfwButton.addEventListener("click", async () => {
+	if (encodedImageSrc != "") {
+		let isNsfw = await imgNsfw(encodedImageSrc);
 
-				toBase64(img.src);
-
-				img.onload = () => {
-					// 캔버스 크기를 이미지 크기에 맞춥니다.
-					canvas.width = img.width;
-					canvas.height = img.height;
-
-					// 캔버스에 이미지를 그립니다.
-					ctx.drawImage(img, 0, 0, img.width, img.height);
-				};
-			})
-			.catch((error) => console.error(error));
+		if (isNsfw) {
+			alert("폭력적/선정적 컨텐츠입니다");
+		} else {
+			if (confirm("폭력적/선정적 컨텐츠가 아닙니다. 사진을 저장하시겠습니까?")) {
+				saveImg(encodedImageSrc);
+				alert("사진이 저장되었습니다.");
+			}
+		}
 	}
-};
-
-const imgChange = () => {
-	if (img.src != "") {
-		console.log("이미지 변환 실행");
-		fetch("/change", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ image: img.src })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				img.src = data.images[0].image;
-				toBase64(img.src);
-				img.onload = () => {
-					// 캔버스 크기를 이미지 크기에 맞춥니다.
-					canvas.width = img.width;
-					canvas.height = img.height;
-
-					// 캔버스에 이미지를 그립니다.
-					ctx.drawImage(img, 0, 0, img.width, img.height);
-				};
-			})
-			.catch((error) => console.error(error));
-	}
-};
+});
